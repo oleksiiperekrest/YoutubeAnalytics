@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">YouTube Analytics</string>
+    <string name="action_settings">Настройки</string>
+
+    <!--наименование вкладок-->
+    <string name="titleGlobalInformation">Инф. о канале</string>
+    <string name="titleCompareGlobalInformation">Сравнить инф.</string>
+    <string name="titleSortChannelsData">Сорт. каналы</string>
+    <string name="titleMediaResonance">Медиа резонанс</string>
+    <string name="titleCompareMediaResonance">Сравнить медиа</string>
+    <string name="titleSortMediaResonance">Сорт. медиа</string>
+
+    <!--поля ввода-->
+    <string name="etChannelId">Введите channelId</string>
+    <string name="btnGetData">Получить данные</string>
+    <string name="tvChannelName">Имя канала</string>
+    <string name="tvDateCreationChannel">Дата создания канала</string>
+    <string name="tvNumberSubscribers">Кол-во подписчиков</string>
+    <string name="tvNumberVideos">Кол-во видео на канале</string>
+    <string name="tvNumberViews">Кол-во просмотров всех видео</string>
+
+    <!--название настроек-->
+    <string name="setTitleWayFolder">Путь к папке с кэшем</string>
+    <string name="setSummaryWayFolder">Устанавливает путь к папке с кешем</string>
+    <string name="setDialogWayFolder">Укажите путь к папке с кешем</string>
+    <string name="setCacheYes">Сохранять кеш?</string>
+    <string name="setCacheNo">Не нужно сохранять кеш?</string>
+    <string name="setTitleCache">Хранение кеша</string>
+
+    <string name="setTimeYes">Отображать время?</string>
+    <string name="setTimeNo">Не отображать время?</string>
+    <string name="setTitleTime">Время на выполнение запроса</string>
+</resources>
