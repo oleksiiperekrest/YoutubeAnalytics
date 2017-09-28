@@ -6,11 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.gmail.fomichov.m.youtubeanalytics.R;
-import com.gmail.fomichov.m.youtubeanalytics.fragments.CompareGlobalInformation;
+import com.gmail.fomichov.m.youtubeanalytics.fragments.GlobalInfoCompare;
 import com.gmail.fomichov.m.youtubeanalytics.fragments.CompareMediaResonance;
-import com.gmail.fomichov.m.youtubeanalytics.fragments.GlobalInformation;
+import com.gmail.fomichov.m.youtubeanalytics.fragments.GlobalInfo;
 import com.gmail.fomichov.m.youtubeanalytics.fragments.MediaResonance;
-import com.gmail.fomichov.m.youtubeanalytics.fragments.SortChannelsData;
+import com.gmail.fomichov.m.youtubeanalytics.fragments.GlobalInfoSort;
 import com.gmail.fomichov.m.youtubeanalytics.fragments.SortMediaResonance;
 
 public class MyPagerAdapter extends FragmentPagerAdapter {
@@ -25,11 +25,11 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return GlobalInformation.newInstance();
+                return GlobalInfo.newInstance();
             case 1:
-                return CompareGlobalInformation.newInstance();
+                return GlobalInfoCompare.newInstance();
             case 2:
-                return SortChannelsData.newInstance();
+                return GlobalInfoSort.newInstance();
             case 3:
                 return MediaResonance.newInstance();
             case 4:

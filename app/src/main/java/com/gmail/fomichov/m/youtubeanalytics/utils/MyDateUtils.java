@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MyDateUtils {
-    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX"); // задаем формат даты
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS"); // задаем формат даты
     private static Calendar calendar = Calendar.getInstance(); // подключаем календарь
 
     private MyDateUtils() {
@@ -25,6 +25,15 @@ public class MyDateUtils {
     public static Date convertStringToDate(String date) throws ParseException {
         calendar.setTime(dateFormat.parse(date));
         return calendar.getTime();
+    }
+
+    public static Date getYearMonthDay2(Date date) throws ParseException {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        return c.getTime();
     }
 
 }

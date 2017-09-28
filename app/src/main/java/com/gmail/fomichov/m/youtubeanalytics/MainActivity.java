@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), this);
         ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(pagerAdapter);
+        mViewPager.setOffscreenPageLimit(6); // храним состояние всех фрагментов
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
     }

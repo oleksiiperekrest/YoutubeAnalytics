@@ -3,21 +3,36 @@
     <string name="action_settings">Настройки</string>
 
     <!--наименование вкладок-->
-    <string name="titleGlobalInformation">Инф. о канале</string>
-    <string name="titleCompareGlobalInformation">Сравнить инф.</string>
-    <string name="titleSortChannelsData">Сорт. каналы</string>
-    <string name="titleMediaResonance">Медиа резонанс</string>
-    <string name="titleCompareMediaResonance">Сравнить медиа</string>
-    <string name="titleSortMediaResonance">Сорт. медиа</string>
+    <string name="titleGlobalInformation">Данные о канале</string>
+    <string name="titleCompareGlobalInformation">Сравнить каналы по данным</string>
+    <string name="titleSortChannelsData">Сортировать каналы</string>
+    <string name="titleMediaResonance">Резонанс</string>
+    <string name="titleCompareMediaResonance">Сравнить по резонансу</string>
+    <string name="titleSortMediaResonance">Сортировать по резонансу</string>
+
+    <!--кнопки, описание-->
+    <string name="btnGetData">Запрос</string>
+    <string name="tvSelectTypeSort">Сортировать по</string>
+    <string name="ok">Ок</string>
+    <string name="cancel">Отмена</string>
+    <string name="etArrayIdChannel">Введите id каналов YouTube через пробел</string>
 
     <!--поля ввода-->
-    <string name="etChannelId">Введите channelId</string>
-    <string name="btnGetData">Получить данные</string>
+    <string name="etChannelId">ChannelId</string>
+    <string name="etChannelIdOne">Первый channelId</string>
+    <string name="etChannelIdTwo">Второй channelId</string>
     <string name="tvChannelName">Имя канала</string>
     <string name="tvDateCreationChannel">Дата создания канала</string>
     <string name="tvNumberSubscribers">Кол-во подписчиков</string>
     <string name="tvNumberVideos">Кол-во видео на канале</string>
-    <string name="tvNumberViews">Кол-во просмотров всех видео</string>
+    <string name="tvNumberViews">Кол-во просмотров</string>
+
+    <!--сокращения для рециклера-->
+    <string name="chName">имя</string>
+    <string name="chDate">дата</string>
+    <string name="chSubs">подписчики</string>
+    <string name="chVideo">видео</string>
+    <string name="chView">просмотры</string>
 
     <!--название настроек-->
     <string name="setTitleWayFolder">Путь к папке с кэшем</string>
@@ -26,8 +41,19 @@
     <string name="setCacheYes">Сохранять кеш?</string>
     <string name="setCacheNo">Не нужно сохранять кеш?</string>
     <string name="setTitleCache">Хранение кеша</string>
-
     <string name="setTimeYes">Отображать время?</string>
     <string name="setTimeNo">Не отображать время?</string>
     <string name="setTitleTime">Время на выполнение запроса</string>
+    <string name="btnAddArray">Ввести массив</string>
+    <string name="btnLoadExample">Загрузить пример</string>
+
+
+    <!--массив видов сортировок-->
+    <string-array name="sort_array">
+        <item>имени канала</item>
+        <item>дате создания</item>
+        <item>кол-ву подписчиков</item>
+        <item>кол-ву видео на канале</item>
+        <item>кол-ву просмотров всех видео</item>
+    </string-array>
 </resources>

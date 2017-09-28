@@ -1,5 +1,7 @@
 package com.gmail.fomichov.m.youtubeanalytics.request;
 
+import android.app.ProgressDialog;
+
 import com.alibaba.fastjson.JSON;
 import com.gmail.fomichov.m.youtubeanalytics.MainActivity;
 import com.gmail.fomichov.m.youtubeanalytics.json_channel.ChannelYouTube;
@@ -17,10 +19,10 @@ import okhttp3.Response;
 
 public class ChannelsRequest {
     private final String HTTP_URL_PARSE = "https://www.googleapis.com/youtube/v3/channels";
-    private String idUsername;
+    private String idChannel;
 
-    public ChannelsRequest(String idUsername) {
-        this.idUsername = idUsername;
+    public ChannelsRequest(String idChannel) {
+        this.idChannel = idChannel;
     }
 
     // получаем string json
@@ -31,7 +33,7 @@ public class ChannelsRequest {
                 String json = null;
                 HttpUrl.Builder urlBuilder = HttpUrl.parse(HTTP_URL_PARSE).newBuilder();
                 urlBuilder.addQueryParameter("part", "snippet,contentDetails,statistics");
-                urlBuilder.addQueryParameter("id", idUsername);
+                urlBuilder.addQueryParameter("id", idChannel);
                 urlBuilder.addQueryParameter("key", MainActivity.KEY_YOUTUBE_API);
                 Request request = new Request.Builder()
                         .url(urlBuilder.build().toString())
@@ -55,7 +57,7 @@ public class ChannelsRequest {
         return futureTask.get();
     }
 
-    // получае распарсенный обьект
+    // получаем распарсенный обьект
     public ChannelYouTube getObject() throws ExecutionException, InterruptedException {
         FutureTask<ChannelYouTube> futureTask = new FutureTask<ChannelYouTube>(new Callable<ChannelYouTube>() {
             @Override
