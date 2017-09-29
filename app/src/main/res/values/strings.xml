@@ -46,6 +46,8 @@
     <string name="setTitleTime">Время на выполнение запроса</string>
     <string name="btnAddArray">Ввести массив</string>
     <string name="btnLoadExample">Загрузить пример</string>
+    <string name="msgProgressDialog">Получение данных...</string>
+    <string name="toastNoInternet">Нет соединения с интернетом</string>
 
 
     <!--массив видов сортировок-->

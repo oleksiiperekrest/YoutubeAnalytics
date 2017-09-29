@@ -1,6 +1,9 @@
 package com.gmail.fomichov.m.youtubeanalytics.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,21 +12,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gmail.fomichov.m.youtubeanalytics.R;
 import com.gmail.fomichov.m.youtubeanalytics.json_channel.ChannelYouTube;
 import com.gmail.fomichov.m.youtubeanalytics.request.ChannelsRequest;
 import com.gmail.fomichov.m.youtubeanalytics.utils.MyDateUtils;
+import com.gmail.fomichov.m.youtubeanalytics.utils.TestInternet;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 
 public class GlobalInfoCompare extends Fragment {
+    private ChannelsRequest channelsRequestOne;
+    private ChannelsRequest channelsRequestTwo;
+    private Handler handle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.frag_globalinfo_compare, container, false);
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage(getResources().getString((R.string.msgProgressDialog)));
         final EditText etChannelIdOne = (EditText) myView.findViewById(R.id.etChannelIdOne);
         final EditText etChannelIdTwo = (EditText) myView.findViewById(R.id.etChannelIdTwo);
         final TextView tvChannelNameResultOne = (TextView) myView.findViewById(R.id.tvChannelNameResultOne);
@@ -43,38 +53,54 @@ public class GlobalInfoCompare extends Fragment {
         btnGetResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChannelsRequest channelsRequestOne = new ChannelsRequest(etChannelIdOne.getText().toString());
-                ChannelsRequest channelsRequestTwo = new ChannelsRequest(etChannelIdTwo.getText().toString());
-                try {
-                    final ChannelYouTube tubeOne = channelsRequestOne.getObject();
-                    final ChannelYouTube tubeTwo = channelsRequestTwo.getObject();
-                    tvChannelNameResultOne.setText(tubeOne.items.get(0).snippet.title);
-                    tvChannelNameResultTwo.setText(tubeTwo.items.get(0).snippet.title);
-                    tvDateCreationChannelResultOne.setText(String.valueOf(MyDateUtils.convertStringToDate(tubeOne.items.get(0).snippet.publishedAt)));
-                    tvDateCreationChannelResultTwo.setText(String.valueOf(MyDateUtils.convertStringToDate(tubeTwo.items.get(0).snippet.publishedAt)));
-                    tvNumberSubscribersResultOne.setText(String.valueOf(tubeOne.items.get(0).statistics.subscriberCount));
-                    tvNumberSubscribersResultTwo.setText(String.valueOf(tubeTwo.items.get(0).statistics.subscriberCount));
-                    tvNumberVideosResultOne.setText(String.valueOf(tubeOne.items.get(0).statistics.videoCount));
-                    tvNumberVideosResultTwo.setText(String.valueOf(tubeTwo.items.get(0).statistics.videoCount));
-                    tvNumberViewsResultOne.setText(String.valueOf(tubeOne.items.get(0).statistics.viewCount));
-                    tvNumberViewsResultTwo.setText(String.valueOf(tubeTwo.items.get(0).statistics.viewCount));
-                    Picasso.with(getContext()).load(tubeOne.items.get(0).snippet.thumbnails.high.url).into(ivHighImageChannelOne);
-                    Picasso.with(getContext()).load(tubeTwo.items.get(0).snippet.thumbnails.high.url).into(ivHighImageChannelTwo);
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                if (TestInternet.isOnline(getContext())) {
+                    progressDialog.show();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            channelsRequestOne = new ChannelsRequest(etChannelIdOne.getText().toString());
+                            channelsRequestTwo = new ChannelsRequest(etChannelIdTwo.getText().toString());
+                            progressDialog.dismiss();
+                            handle.sendMessage(handle.obtainMessage());
+                        }
+                    }).start();
+
+
+                    handle = new Handler() {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            super.handleMessage(msg);
+                            try {
+                                final ChannelYouTube tubeOne = channelsRequestOne.getObject();
+                                final ChannelYouTube tubeTwo = channelsRequestTwo.getObject();
+                                tvChannelNameResultOne.setText(tubeOne.items.get(0).snippet.title);
+                                tvChannelNameResultTwo.setText(tubeTwo.items.get(0).snippet.title);
+                                tvDateCreationChannelResultOne.setText(String.valueOf(MyDateUtils.convertStringToDate(tubeOne.items.get(0).snippet.publishedAt)));
+                                tvDateCreationChannelResultTwo.setText(String.valueOf(MyDateUtils.convertStringToDate(tubeTwo.items.get(0).snippet.publishedAt)));
+                                tvNumberSubscribersResultOne.setText(String.valueOf(tubeOne.items.get(0).statistics.subscriberCount));
+                                tvNumberSubscribersResultTwo.setText(String.valueOf(tubeTwo.items.get(0).statistics.subscriberCount));
+                                tvNumberVideosResultOne.setText(String.valueOf(tubeOne.items.get(0).statistics.videoCount));
+                                tvNumberVideosResultTwo.setText(String.valueOf(tubeTwo.items.get(0).statistics.videoCount));
+                                tvNumberViewsResultOne.setText(String.valueOf(tubeOne.items.get(0).statistics.viewCount));
+                                tvNumberViewsResultTwo.setText(String.valueOf(tubeTwo.items.get(0).statistics.viewCount));
+                                Picasso.with(getContext()).load(tubeOne.items.get(0).snippet.thumbnails.high.url).into(ivHighImageChannelOne);
+                                Picasso.with(getContext()).load(tubeTwo.items.get(0).snippet.thumbnails.high.url).into(ivHighImageChannelTwo);
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                } else {
+                    Toast.makeText(getContext(), getResources().getString((R.string.toastNoInternet)), Toast.LENGTH_LONG).show();
                 }
             }
         });
         return myView;
     }
-
-
-
-
 
 
     public static GlobalInfoCompare newInstance() {

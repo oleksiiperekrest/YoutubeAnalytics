@@ -3,8 +3,10 @@ package com.gmail.fomichov.m.youtubeanalytics.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -25,7 +27,10 @@ public class DialogArray extends DialogFragment {
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                Intent intent = new Intent("pressButtonOkInDialog");
+                intent.putExtra("array", etArrayIdChannel.getText().toString());
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                dialog.dismiss();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

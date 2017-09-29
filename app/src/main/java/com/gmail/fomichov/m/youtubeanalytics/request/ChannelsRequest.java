@@ -1,11 +1,8 @@
 package com.gmail.fomichov.m.youtubeanalytics.request;
 
-import android.app.ProgressDialog;
-
 import com.alibaba.fastjson.JSON;
 import com.gmail.fomichov.m.youtubeanalytics.MainActivity;
 import com.gmail.fomichov.m.youtubeanalytics.json_channel.ChannelYouTube;
-import com.gmail.fomichov.m.youtubeanalytics.utils.MyLog;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
@@ -25,8 +22,7 @@ public class ChannelsRequest {
         this.idChannel = idChannel;
     }
 
-    // получаем string json
-    private String getJson() throws ExecutionException, InterruptedException {
+    public ChannelYouTube getObject() throws ExecutionException, InterruptedException {
         FutureTask<String> futureTask = new FutureTask<String>(new Callable<String>() {
             @Override
             public String call() throws Exception {
@@ -54,20 +50,7 @@ public class ChannelsRequest {
             }
         });
         new Thread(futureTask).start();
-        return futureTask.get();
-    }
-
-    // получаем распарсенный обьект
-    public ChannelYouTube getObject() throws ExecutionException, InterruptedException {
-        FutureTask<ChannelYouTube> futureTask = new FutureTask<ChannelYouTube>(new Callable<ChannelYouTube>() {
-            @Override
-            public ChannelYouTube call() throws Exception {
-                ChannelYouTube group = JSON.parseObject(getJson(), ChannelYouTube.class);
-                return group;
-            }
-        });
-        new Thread(futureTask).start();
-        return futureTask.get();
+        return JSON.parseObject(futureTask.get(), ChannelYouTube.class);
     }
 }
 

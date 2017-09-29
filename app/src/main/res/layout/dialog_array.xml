@@ -31,6 +31,7 @@
             android:gravity="top"
             android:hint="@string/etArrayIdChannel"
             android:inputType="textMultiLine"
+            android:text="UCt7sv-NKh44rHAEb-qCCxvA UCZzCY2vYd-B2mtk9ZYgbGug UCDbsY8C1eQJ5t6KBv9ds-ag "
             android:textSize="14sp"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="108dp" />

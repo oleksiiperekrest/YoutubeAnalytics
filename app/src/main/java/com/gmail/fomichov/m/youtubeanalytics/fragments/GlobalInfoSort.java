@@ -1,11 +1,18 @@
 package com.gmail.fomichov.m.youtubeanalytics.fragments;
 
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,18 +30,22 @@ import com.gmail.fomichov.m.youtubeanalytics.request.ChannelsRequest;
 import com.gmail.fomichov.m.youtubeanalytics.utils.MyLog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class GlobalInfoSort extends Fragment {
-    private ArrayList<String> channelIdArray;
+    private List<String> channelIdArray;
     private List<ChannelYouTube> tubeList;
     private RecyclerGlobalAdapter adapter;
+    private ProgressDialog progressDialog;
+    private Handler handle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter("pressButtonOkInDialog"));
         View view = inflater.inflate(R.layout.frag_globalinfo_sort, container, false);
         channelIdArray = new ArrayList<>();
         tubeList = new ArrayList<>();
@@ -63,7 +74,11 @@ public class GlobalInfoSort extends Fragment {
                 channelIdArray.add("UCHFNDph3zTYh8-hwofOVXsg");
                 channelIdArray.add("UCSpU8Y1aoqBSAwh8DBpiM9A");
                 channelIdArray.add("UCRP4EhX1Op-jL7D87PB3qhQ");
-                startLoadData();
+                try {
+                    startLoadData();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -130,24 +145,41 @@ public class GlobalInfoSort extends Fragment {
         return view;
     }
 
-    private void startLoadData() {
+    private void startLoadData() throws InterruptedException {
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage(getResources().getString((R.string.msgProgressDialog)));
+        progressDialog.show();
         tubeList.clear();
-        for (int i = 0; i < channelIdArray.size(); i++) {
-            ChannelsRequest channelsRequest = new ChannelsRequest(channelIdArray.get(i));
-            try {
-                tubeList.add(channelsRequest.getObject());
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < channelIdArray.size(); i++) {
+                    ChannelsRequest channelsRequest = new ChannelsRequest(channelIdArray.get(i));
+                    try {
+                        tubeList.add(channelsRequest.getObject());
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Collections.sort(tubeList, new Comparator<ChannelYouTube>() {
+                    public int compare(ChannelYouTube obj1, ChannelYouTube obj2) {
+                        return obj1.items.get(0).snippet.title.compareToIgnoreCase(obj2.items.get(0).snippet.title);
+                    }
+                });
+                progressDialog.dismiss();
+                handle.sendMessage(handle.obtainMessage());
             }
-        }
-        Collections.sort(tubeList, new Comparator<ChannelYouTube>() {
-            public int compare(ChannelYouTube obj1, ChannelYouTube obj2) {
-                return obj1.items.get(0).snippet.title.compareToIgnoreCase(obj2.items.get(0).snippet.title);
+        }).start();
+
+        handle = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                adapter.notifyDataSetChanged();
             }
-        });
-        adapter.notifyDataSetChanged();
+        };
     }
 
     public static GlobalInfoSort newInstance() {
@@ -164,4 +196,18 @@ public class GlobalInfoSort extends Fragment {
         fragmentTransaction.addToBackStack(null);
         new DialogArray().show(fragmentTransaction, "dialog");
     }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            channelIdArray.clear();
+            channelIdArray = new ArrayList(Arrays.asList(intent.getStringExtra("array").split(" ")));
+            try {
+                startLoadData();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+        }
+    };
 }
