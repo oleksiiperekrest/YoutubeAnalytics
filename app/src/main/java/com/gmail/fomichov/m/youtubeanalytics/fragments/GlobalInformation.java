@@ -38,7 +38,7 @@ public class GlobalInformation extends Fragment {
             public void onClick(View v) {
                 ChannelsRequest channelsRequest = new ChannelsRequest(etChannelId.getText().toString());
                 try {
-                    final ChannelYouTube tube = channelsRequest.getObject();
+                    final ChannelYouTube tube = channelsRequest.getSingleObject();
                     tvChannelNameResult.setText(tube.items.get(0).snippet.title);
                     tvDateCreationChannelResult.setText(tube.items.get(0).snippet.publishedAt);
                     tvNumberSubscribersResult.setText(String.valueOf(tube.items.get(0).statistics.subscriberCount));
