@@ -3,6 +3,7 @@ package com.gmail.fomichov.m.youtubeanalytics.request;
 import com.alibaba.fastjson.JSON;
 import com.gmail.fomichov.m.youtubeanalytics.MainActivity;
 import com.gmail.fomichov.m.youtubeanalytics.json_channel.ChannelYouTube;
+import com.gmail.fomichov.m.youtubeanalytics.utils.CheckForChannel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,11 +21,13 @@ public class ChannelsRequest {
     private final String HTTP_URL_PARSE = "https://www.googleapis.com/youtube/v3/channels";
     private String idChannel;
 
-    public ChannelsRequest(){
+    public ChannelsRequest() {
     }
 
-    public ChannelsRequest(String idChannel) {
+    public ChannelsRequest(String idChannel) throws ExecutionException, InterruptedException {
         this.idChannel = idChannel;
+//        this.idChannel = CheckForChannel.checkForChannel(new SearchRequest(idChannel).getChannelId());
+
     }
 
     public ChannelYouTube getSingleObject() throws ExecutionException, InterruptedException {
