@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.gmail.fomichov.m.youtubeanalytics.R;
@@ -42,6 +43,8 @@ public class GlobalInfoSort extends Fragment {
     private RecyclerGlobalAdapter adapter;
     private ProgressDialog progressDialog;
     private Handler handle;
+    private Spinner spinner;
+    private LinearLayout llSpinnerChoice;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,9 +52,10 @@ public class GlobalInfoSort extends Fragment {
         View view = inflater.inflate(R.layout.frag_globalinfo_sort, container, false);
         channelIdArray = new ArrayList<>();
         tubeList = new ArrayList<>();
-        Spinner spinner = (Spinner) view.findViewById(R.id.spTypeSort);
+        spinner = (Spinner) view.findViewById(R.id.spTypeSort);
         Button btnAddArray = (Button) view.findViewById(R.id.btnAddArray);
         Button btnLoadExample = (Button) view.findViewById(R.id.btnLoadExample);
+        llSpinnerChoice = (LinearLayout) view.findViewById(R.id.llSpinnerChoice);
 
         btnAddArray.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +137,6 @@ public class GlobalInfoSort extends Fragment {
                         });
                         break;
                 }
-                MyLog.showLog(choose[position]);
                 adapter.notifyDataSetChanged();
             }
 
@@ -153,15 +156,13 @@ public class GlobalInfoSort extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < channelIdArray.size(); i++) {
-                    ChannelsRequest channelsRequest = new ChannelsRequest(channelIdArray.get(i));
-                    try {
-                        tubeList.add(channelsRequest.getObject());
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                ChannelsRequest channelsRequest = new ChannelsRequest();
+                try {
+                    tubeList.addAll(channelsRequest.getArrayObject(channelIdArray));
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
                 Collections.sort(tubeList, new Comparator<ChannelYouTube>() {
                     public int compare(ChannelYouTube obj1, ChannelYouTube obj2) {
@@ -178,6 +179,8 @@ public class GlobalInfoSort extends Fragment {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 adapter.notifyDataSetChanged();
+                llSpinnerChoice.setVisibility(View.VISIBLE);
+                spinner.setSelection(0);
             }
         };
     }
@@ -207,7 +210,6 @@ public class GlobalInfoSort extends Fragment {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
         }
     };
 }

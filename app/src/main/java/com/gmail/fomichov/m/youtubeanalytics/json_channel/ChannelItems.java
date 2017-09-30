@@ -4,4 +4,5 @@ public class ChannelItems {
     public String IdChannel;
     public Snippet snippet;
     public Statistics statistics;
+    public RelatedPlaylists relatedPlaylists;
 }

@@ -27,10 +27,12 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llSpinnerChoice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:visibility="invisible"
         android:layout_marginBottom="8dp"
         android:orientation="horizontal">
 
@@ -47,6 +49,7 @@
             android:id="@+id/spTypeSort"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
             android:entries="@array/sort_array" />
     </LinearLayout>
 

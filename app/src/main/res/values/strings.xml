@@ -47,7 +47,14 @@
     <string name="btnAddArray">Ввести массив</string>
     <string name="btnLoadExample">Загрузить пример</string>
     <string name="msgProgressDialog">Получение данных...</string>
+
+    <!--toasts-->
     <string name="toastNoInternet">Нет соединения с интернетом</string>
+
+    <!--стартовый экран-->
+    <string name="tvEmail">m.fomichov@gmail.com simurashka@gmail.com</string>
+    <string name="tvDeveloper">Project1 Group Development</string>
+    <string name="tvVersion">version 1.0</string>
 
 
     <!--массив видов сортировок-->

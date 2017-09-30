@@ -61,7 +61,7 @@ public class GlobalInfo extends Fragment {
                         public void handleMessage(Message msg) {
                             super.handleMessage(msg);
                             try {
-                                final ChannelYouTube tube = channelsRequest.getObject();
+                                final ChannelYouTube tube = channelsRequest.getSingleObject();
                                 tvChannelNameResult.setText(tube.items.get(0).snippet.title);
                                 tvDateCreationChannelResult.setText(String.valueOf(MyDateUtils.convertStringToDate(tube.items.get(0).snippet.publishedAt)));
                                 tvNumberSubscribersResult.setText(String.valueOf(tube.items.get(0).statistics.subscriberCount));

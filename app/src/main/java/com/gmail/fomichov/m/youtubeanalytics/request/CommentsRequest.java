@@ -3,6 +3,7 @@ package com.gmail.fomichov.m.youtubeanalytics.request;
 import com.alibaba.fastjson.JSON;
 import com.gmail.fomichov.m.youtubeanalytics.MainActivity;
 import com.gmail.fomichov.m.youtubeanalytics.json_channel.ChannelYouTube;
+import com.gmail.fomichov.m.youtubeanalytics.json_comments.Playlist;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,25 +17,28 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class ChannelsRequest {
-    private final String HTTP_URL_PARSE = "https://www.googleapis.com/youtube/v3/channels";
-    private String idChannel;
+public class CommentsRequest {
+    private final String HTTP_URL_PARSE_PLAYLIST = "https://www.googleapis.com/youtube/v3/playlistItems";
+    private final String HTTP_URL_PARSE_VIDEO = "https://www.googleapis.com/youtube/v3/videos";
+    private String idPlayList;
 
-    public ChannelsRequest(){
+    public CommentsRequest(){
     }
 
-    public ChannelsRequest(String idChannel) {
-        this.idChannel = idChannel;
+    public CommentsRequest(String idPlayList) {
+        this.idPlayList = idPlayList;
     }
 
-    public ChannelYouTube getSingleObject() throws ExecutionException, InterruptedException {
+    public Playlist getListIdVideo(final String nextPageToken) throws ExecutionException, InterruptedException {
         FutureTask<String> futureTask = new FutureTask<String>(new Callable<String>() {
             @Override
             public String call() throws Exception {
                 String json = null;
-                HttpUrl.Builder urlBuilder = HttpUrl.parse(HTTP_URL_PARSE).newBuilder();
-                urlBuilder.addQueryParameter("part", "snippet,contentDetails,statistics");
-                urlBuilder.addQueryParameter("id", idChannel);
+                HttpUrl.Builder urlBuilder = HttpUrl.parse(HTTP_URL_PARSE_PLAYLIST).newBuilder();
+                urlBuilder.addQueryParameter("part", "contentDetails");
+                urlBuilder.addQueryParameter("playlistId", idPlayList);
+                urlBuilder.addQueryParameter("maxResults", "50");
+                urlBuilder.addQueryParameter("pageToken", nextPageToken);
                 urlBuilder.addQueryParameter("key", MainActivity.KEY_YOUTUBE_API);
                 Request request = new Request.Builder()
                         .url(urlBuilder.build().toString())
@@ -55,7 +59,7 @@ public class ChannelsRequest {
             }
         });
         new Thread(futureTask).start();
-        return JSON.parseObject(futureTask.get(), ChannelYouTube.class);
+        return JSON.parseObject(futureTask.get(), Playlist.class);
     }
 
     public List<ChannelYouTube> getArrayObject(final List<String> channelIdArray) throws ExecutionException, InterruptedException {
@@ -67,7 +71,7 @@ public class ChannelsRequest {
                 @Override
                 public String call() throws Exception {
                     String json = null;
-                    HttpUrl.Builder urlBuilder = HttpUrl.parse(HTTP_URL_PARSE).newBuilder();
+                    HttpUrl.Builder urlBuilder = HttpUrl.parse(HTTP_URL_PARSE_PLAYLIST).newBuilder();
                     urlBuilder.addQueryParameter("part", "snippet,contentDetails,statistics");
                     urlBuilder.addQueryParameter("id", channelIdArray.get(finalI));
                     urlBuilder.addQueryParameter("key", MainActivity.KEY_YOUTUBE_API);

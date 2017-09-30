@@ -71,8 +71,8 @@ public class GlobalInfoCompare extends Fragment {
                         public void handleMessage(Message msg) {
                             super.handleMessage(msg);
                             try {
-                                final ChannelYouTube tubeOne = channelsRequestOne.getObject();
-                                final ChannelYouTube tubeTwo = channelsRequestTwo.getObject();
+                                final ChannelYouTube tubeOne = channelsRequestOne.getSingleObject();
+                                final ChannelYouTube tubeTwo = channelsRequestTwo.getSingleObject();
                                 tvChannelNameResultOne.setText(tubeOne.items.get(0).snippet.title);
                                 tvChannelNameResultTwo.setText(tubeTwo.items.get(0).snippet.title);
                                 tvDateCreationChannelResultOne.setText(String.valueOf(MyDateUtils.convertStringToDate(tubeOne.items.get(0).snippet.publishedAt)));
