@@ -26,9 +26,8 @@ import android.widget.Spinner;
 import com.gmail.fomichov.m.youtubeanalytics.R;
 import com.gmail.fomichov.m.youtubeanalytics.adapters.RecyclerGlobalAdapter;
 import com.gmail.fomichov.m.youtubeanalytics.dialogs.DialogArray;
-import com.gmail.fomichov.m.youtubeanalytics.json_channel.ChannelYouTube;
+import com.gmail.fomichov.m.youtubeanalytics.json.json_channel.ChannelYouTube;
 import com.gmail.fomichov.m.youtubeanalytics.request.ChannelsRequest;
-import com.gmail.fomichov.m.youtubeanalytics.utils.MyLog;
 
 import java.util.ArrayList;
 import java.util.Arrays;

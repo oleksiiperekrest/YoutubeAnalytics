@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gmail.fomichov.m.youtubeanalytics.R;
-import com.gmail.fomichov.m.youtubeanalytics.json_channel.ChannelYouTube;
+import com.gmail.fomichov.m.youtubeanalytics.json.json_channel.ChannelYouTube;
 import com.gmail.fomichov.m.youtubeanalytics.utils.MyDateUtils;
 
 import java.text.ParseException;

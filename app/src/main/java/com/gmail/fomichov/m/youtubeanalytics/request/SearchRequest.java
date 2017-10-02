@@ -2,7 +2,7 @@ package com.gmail.fomichov.m.youtubeanalytics.request;
 
 import com.alibaba.fastjson.JSON;
 import com.gmail.fomichov.m.youtubeanalytics.MainActivity;
-import com.gmail.fomichov.m.youtubeanalytics.json_search.SearchResponse;
+import com.gmail.fomichov.m.youtubeanalytics.json.json_search.SearchResponse;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -18,14 +18,11 @@ public class SearchRequest {
     private String request;
     private int maxResults = 7;
 
-    public SearchRequest(){
-    }
-
     public SearchRequest(String request) {
         this.request = request;
     }
 
-    public SearchResponse getChannelId() throws ExecutionException, InterruptedException {
+    public SearchResponse getSearchResponse() throws ExecutionException, InterruptedException {
 
                 String json = null;
                 HttpUrl.Builder urlBuilder = HttpUrl.parse(HTTP_URL_PARSE).newBuilder();
